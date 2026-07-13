@@ -47,6 +47,13 @@ SVG_WORKSPACE_ICON = """
 </svg>
 """
 
+SVG_INTEGRATION_ICON = """
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
+    <path d="M10 19V15H14V19M19 12H21M12 3V5M3 12H5M19 8L21 6M5 8L3 6M19 16L21 18M5 16L3 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="6" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="rgba(0, 255, 204, 0.05)"/>
+</svg>
+"""
+
 SVG_NEWS_ICON = """
 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
     <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
@@ -205,7 +212,7 @@ st.markdown(
         padding: 12px !important;
     }}
 
-    /* 🛡️ FIXED VISUAL CONTRAST FOR SYSTEM INSTRUCTIONS TEXT AREA IN SIDEBAR */
+    /* FIXED VISUAL CONTRAST FOR SYSTEM INSTRUCTIONS TEXT AREA IN SIDEBAR */
     [data-testid="stSidebar"] div[data-testid="stTextArea"] textarea {{
         background-color: #121214 !important;
         color: #ffffff !important;
@@ -457,7 +464,7 @@ button {
     font-family: inherit;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.45);
     transition: all 0.2s;
 }
 button:hover {
@@ -1238,7 +1245,6 @@ def create_project_zip(files_dict):
 # =====================================================================
 # ⚙️ TROPHY ROOM UTILITY FUNCTIONS
 # =====================================================================
-# Trophy Room memory initialize
 if "unlocked_achievements" not in st.session_state:
     st.session_state.unlocked_achievements = []
 
@@ -1265,7 +1271,7 @@ if "last_explained_file" not in st.session_state:
 if "school_explanation" not in st.session_state:
     st.session_state.school_explanation = ""
 
-# Preload the customizable Jarvis Butler persona instructions (purged of "Sir" titles)
+# Preload the customizable Jarvis Butler persona instructions
 DEFAULT_SYSTEM_INSTRUCTIONS = (
     "You are Titan, a highly formal, articulate, and brilliant software engineering intelligence, "
     "modeled to sound exactly like a highly sophisticated personal butler-assistant.\n\n"
@@ -1318,7 +1324,7 @@ else:
     
     current_page = st.sidebar.radio(
         "Navigation Hub", 
-        ["Active Workspace", "News & Updates", "Admin Panel", "Support Desk", "Legal Frame"]
+        ["Active Workspace", "🔌 Integrations Hub", "News & Updates", "Admin Panel", "Support Desk", "Legal Frame"]
     )
     
     if current_page == "Active Workspace":
@@ -1479,7 +1485,6 @@ else:
                         client = Groq(api_key=st.session_state.api_key)
                         chat_completion = client.chat.completions.create(
                             messages=[
-                                # MAP THE CONFIGURABLE SIDEBAR DIRECTIVE AS THE PRIMARY LLM SYSTEM PROMPT
                                 {"role": "system", "content": st.session_state.system_instructions},
                                 *st.session_state.messages
                             ],
@@ -1629,18 +1634,180 @@ else:
                 
         render_footer()
 
+    # =====================================================================
+    # 🔌 EMBED & ROBOT HARDWARE CODES PAGE
+    # =====================================================================
+    elif current_page == "🔌 Integrations Hub":
+        st.markdown(f"<h1>{SVG_INTEGRATION_ICON} 🔌 Integrations & Hardware Hub</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 1.1em; opacity: 0.8; margin-top:-5px;'>Control custom embeds and link Titan directly to physical hardware and robots!</p>", unsafe_allow_html=True)
+        st.write("---")
+        
+        embed_tab, robot_tab = st.tabs([
+            "🌐 Web Embedder Widget Generator", 
+            "🤖 Web Serial Physical Robot Link"
+        ])
+        
+        with embed_tab:
+            st.markdown("### 🖼️ Embed Titan into Any Website")
+            st.write("Let anyone place your live Titan Studio inside their custom blog, portfolio, Wix, or WordPress page!")
+            
+            st.write("##")
+            width_slider = st.slider("Embed Width (pixels or %)", 300, 1200, 800)
+            height_slider = st.slider("Embed Height (pixels)", 400, 1000, 600)
+            hide_sidebar = st.checkbox("Hide parent sidebar in embed", value=True)
+            
+            # Formulate the visitor's custom iframe code
+            base_url = "https://titanai-mark5beta-rljyvyskurccnqxgrmxw3v.streamlit.app"
+            embed_url = f"{base_url}?embed=true" if hide_sidebar else base_url
+            
+            iframe_code = f'<iframe src="{embed_url}" width="{width_slider}" height="{height_slider}" style="border: 2px solid #00ffcc; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.25);"></iframe>'
+            
+            st.write("---")
+            st.markdown("#### 📋 Copy-to-Clipboard HTML Block")
+            st.code(iframe_code, language="html")
+            
+            st.write("---")
+            st.markdown("#### 👀 Live Embed Preview")
+            st.components.v1.html(iframe_code, height=height_slider+50)
+
+        with robot_tab:
+            st.markdown("### 🤖 Web Serial Physical Robot Link")
+            st.write("Chromebook and browser power unlocked! Plug any USB robot controller (like an Arduino, Micro:bit, or Pico) into your Chromebook, click connect, and send direct serial steering commands.")
+            
+            st.write("##")
+            
+            # Native browser Web Serial integration package
+            robot_web_serial_html = """
+            <div id="serial-container" style="background-color: #111116; border: 2px solid #ff00ff; border-radius: 15px; padding: 25px; color: #ffffff; font-family: monospace; box-shadow: 0 0 25px rgba(255, 0, 255, 0.15); max-width: 600px; margin: auto;">
+                <h3 style="color: #ff00ff; margin-top: 0; text-align: center;">🤖 WEB SERIAL CONTROLLER</h3>
+                <p style="text-align: center; font-size: 0.9em; opacity: 0.8;">Securely handshake and drive physical robot wheels over USB serial protocols.</p>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                    <button id="connect-btn" onclick="connectSerial()" style="background-color: #ff00ff; border: none; color: #000; font-weight: bold; padding: 12px 20px; border-radius: 8px; cursor: pointer; box-shadow: 0 0 10px rgba(255, 0, 255, 0.4); transition: transform 0.1s;">🔌 ESTABLISH HARDWARE LINK</button>
+                    <button id="disconnect-btn" onclick="disconnectSerial()" style="background-color: #333; border: 1px solid #ff00ff; color: #ff00ff; font-weight: bold; padding: 12px 20px; border-radius: 8px; cursor: pointer;" disabled>Disconnect</button>
+                </div>
+                
+                <div id="connection-status" style="text-align: center; color: #ff4b4b; font-weight: bold; margin-bottom: 15px;">🔌 STATUS: DISCONNECTED</div>
+                
+                <!-- Digital Simulated Sandbox Preview -->
+                <div style="background-color: #050508; height: 180px; border-radius: 10px; position: relative; border: 1px dashed rgba(255,255,255,0.1); margin-bottom: 15px; overflow: hidden;">
+                    <div id="sim-robot" style="width: 40px; height: 40px; background-color: #00ffcc; border-radius: 8px; position: absolute; top: 70px; left: 280px; transition: all 0.3s; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 12px #00ffcc;">
+                        <span style="color: #000; font-size: 1.2em; font-weight: bold;">🤖</span>
+                    </div>
+                    <div style="position: absolute; bottom: 8px; left: 10px; font-size: 0.75em; opacity: 0.6; color: #00ffcc;">Simulated Area Preview</div>
+                </div>
+                
+                <!-- Controller Joystick Grid -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 250px; margin: auto; margin-bottom: 20px;">
+                    <div></div>
+                    <button onclick="drive('FORWARD')" style="background-color: #00ffcc; border: none; color: #000; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer;">⬆️</button>
+                    <div></div>
+                    <button onclick="drive('LEFT')" style="background-color: #00ffcc; border: none; color: #000; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer;">⬅️</button>
+                    <button onclick="drive('STOP')" style="background-color: #ff4b4b; border: none; color: #fff; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer;">🛑</button>
+                    <button onclick="drive('RIGHT')" style="background-color: #00ffcc; border: none; color: #000; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer;">➡️</button>
+                    <div></div>
+                    <button onclick="drive('BACKWARD')" style="background-color: #00ffcc; border: none; color: #000; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer;">⬇️</button>
+                    <div></div>
+                </div>
+                
+                <div style="background-color: #000; border-radius: 8px; padding: 10px; height: 100px; overflow-y: auto; font-size: 0.8em; border: 1px solid rgba(255,255,255,0.05);" id="serial-terminal">
+                    <div style="color: #888;">[Terminal initialized. Waiting for connection...]</div>
+                </div>
+            </div>
+            
+            <script>
+                let port;
+                let writer;
+                let rxPos = 280;
+                let ryPos = 70;
+                
+                const robot = document.getElementById('sim-robot');
+                const status = document.getElementById('connection-status');
+                const terminal = document.getElementById('serial-terminal');
+                const connectBtn = document.getElementById('connect-btn');
+                const disconnectBtn = document.getElementById('disconnect-btn');
+                
+                function printLog(text, color="#888") {
+                    terminal.innerHTML += `<div style="color: ${color};">[${new Date().toLocaleTimeString()}] ${text}</div>`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+                
+                async function connectSerial() {
+                    if (!("serial" in navigator)) {
+                        printLog("❌ Web Serial is not supported on this browser version. Use Google Chrome!", "#ff4b4b");
+                        return;
+                    }
+                    try {
+                        port = await navigator.serial.requestPort();
+                        await port.open({ baudRate: 9600 });
+                        writer = port.writable.getWriter();
+                        
+                        status.innerText = "🔌 STATUS: CONNECTED";
+                        status.style.color = "#00ffcc";
+                        connectBtn.disabled = true;
+                        disconnectBtn.disabled = false;
+                        printLog("✅ Connected to hardware controller successfully!", "#00ffcc");
+                    } catch (err) {
+                        printLog("❌ Connection rejected: " + err.message, "#ff4b4b");
+                    }
+                }
+                
+                async function disconnectSerial() {
+                    try {
+                        if (writer) {
+                            await writer.releaseLock();
+                        }
+                        if (port) {
+                            await port.close();
+                        }
+                        status.innerText = "🔌 STATUS: DISCONNECTED";
+                        status.style.color = "#ff4b4b";
+                        connectBtn.disabled = false;
+                        disconnectBtn.disabled = true;
+                        printLog("⚠️ Hardware link closed.", "#ffcc00");
+                    } catch(err) {
+                        printLog("❌ Error during shutdown: " + err.message, "#ff4b4b");
+                    }
+                }
+                
+                async function drive(direction) {
+                    printLog(`Command Sent: ${direction}`, "#ff00ff");
+                    
+                    // Move simulated robot
+                    if (direction === "FORWARD") ryPos = Math.max(10, ryPos - 20);
+                    if (direction === "BACKWARD") ryPos = Math.min(130, ryPos + 20);
+                    if (direction === "LEFT") rxPos = Math.max(10, rxPos - 40);
+                    if (direction === "RIGHT") rxPos = Math.min(540, rxPos + 40);
+                    
+                    robot.style.top = ryPos + "px";
+                    robot.style.left = rxPos + "px";
+                    
+                    // Direct binary output mapping for physical serial controller
+                    if (writer) {
+                        try {
+                            const encoder = new TextEncoder();
+                            await writer.write(encoder.encode(direction + "\\n"));
+                        } catch (err) {
+                            printLog("❌ Code write failure: " + err.message, "#ff4b4b");
+                        }
+                    }
+                }
+            </script>
+            """
+            st.components.v1.html(robot_web_serial_html, height=540)
+            
+        render_footer()
+
     elif current_page == "News & Updates":
         st.markdown(f"<h1>{SVG_NEWS_ICON} News & Developer Logs</h1>", unsafe_allow_html=True)
         st.write("---")
-        st.markdown("### 🚀 Version Release: Beta v2.1.0 (Configurable Mission Core)")
-        st.caption("Updated on July 10, 2026")
+        st.markdown("### 🚀 Version Release: Beta v2.2.0 (The Integrations Hub Update)")
+        st.caption("Updated on July 12, 2026")
         st.markdown("""
-        * **Core Mission Directives Input:** Added a fully customizable text area inside the sidebar to configure Titan's backend system instructions in real-time.
-        * **Titan's Trophy Room (Achievements):** Added an interactive, level-up HUD to earn specialized badges (🔑 Link Established, 🎨 Style Space, 🚀 Blueprint Deployed, 🎮 Sandbox Pioneer, and 🎓 Code Scholar) as you code!
-        * **Workspace Theme Switcher:** Fully customizable look! Switch dynamically between *Premium Gold*, *Vaporwave Neon Grid*, *8-Bit Arcade*, *Cyberpunk Core*, and *Steampunk Brass*.
-        * **Game Blueprint Templates:** Instantly deploy highly-responsive, playable kid-safe arcade template files directly to your workspace.
-        * **Live Sandbox Previewer:** Integrated a high-performance in-memory compiler tab to run and play generated retro games instantly in your browser.
-        * **Titan's Code School Mode:** Created a premium educational panel where Titan breaks down code files into simple, beginner-friendly learning concepts.
+        * **🔌 User Integrations Hub:** Added a public-facing widgets tool! Any visitor can now customize and copy an HTML iframe embed block to share Titan Creator's Studio on their Wix, WordPress, or custom websites.
+        * **🤖 Web Serial Hardware Driver:** Built client-side browser integration allowing any visitor to physically hook up microcontrollers (Arduino/Micro:bit) to their Chromebook's USB port and run robots right from the site!
+        * **The 'Sir' Purge:** Purged conversational title calls from default prompts and tamagotchi parameters.
+        * **Trophy Room local Level HUD:** Added dynamic, gamified unlocks to encourage coding, sandbox previews, and theme modifications.
         """)
         render_footer()
 
