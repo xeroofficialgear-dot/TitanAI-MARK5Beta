@@ -1811,21 +1811,21 @@ else:
         """)
         render_footer()
 
-    elif current_page == "Admin Panel":
-        st.markdown(f"<h1>{SVG_ADMIN_ICON} Admin Controller Workspace</h1>", unsafe_allow_html=True)
+    elif current_page == "task manager":
+        st.markdown(f"<h1>{SVG_ADMIN_ICON} Controller Workspace</h1>", unsafe_allow_html=True)
         st.write("---")
-        st.info("⚠️ **Local Session Environment**\n\nAnnouncements sent here stay registered to your local session state.")
-        st.subheader("Broadcast System Announcements")
-        new_ann = st.text_input("Type announcement text:", placeholder="e.g., Core neural systems are operating within optimal limits...")
+        st.info("⚠️ **Local Session Environment**\n\nTasks sent here stay registered to your local session state.")
+        st.subheader("plan tasks")
+        new_ann = st.text_input("Type task text:", placeholder="e.g., Core neural systems are operating within optimal limits...")
         
-        if st.button("Send Announcement", use_container_width=True, type="primary"):
+        if st.button("Send task", use_container_width=True, type="primary"):
             if new_ann:
                 st.session_state.announcements.append(new_ann)
-                st.success("Announcement successfully registered!")
+                st.success("task successfully registered!")
             else:
                 st.error("Text field cannot be left blank.")
         st.write("---")
-        st.subheader("Current Active Announcements")
+        st.subheader("Current Active tasks")
         for i, a in enumerate(st.session_state.announcements):
             st.warning(f"📣 {a}")
         render_footer()
