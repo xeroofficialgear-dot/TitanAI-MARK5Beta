@@ -464,7 +464,7 @@ button {
     font-family: inherit;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.45);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
     transition: all 0.2s;
 }
 button:hover {
@@ -1635,7 +1635,7 @@ else:
         render_footer()
 
     # =====================================================================
-    # 🔌 EMBED & ROBOT HARDWARE CODES PAGE
+    # 🔌 NEW HUB PAGE: INTEGRATIONS & ROBOT HARDWARE CODES
     # =====================================================================
     elif current_page == "🔌 Integrations Hub":
         st.markdown(f"<h1>{SVG_INTEGRATION_ICON} 🔌 Integrations & Hardware Hub</h1>", unsafe_allow_html=True)
@@ -1861,3 +1861,4 @@ else:
         </div>
         """, unsafe_allow_html=True)
         render_footer()
+
