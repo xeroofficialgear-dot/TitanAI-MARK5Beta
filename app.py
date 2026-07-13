@@ -1672,7 +1672,7 @@ else:
 
         with robot_tab:
             st.markdown("### 🤖 Web Serial Physical Robot Link")
-            st.write("Chromebook and browser power unlocked! Plug any USB robot controller (like an Arduino, Micro:bit, or Pico) into your Chromebook, click connect, and send direct serial steering commands.")
+            st.write("Device and browser power unlocked! Plug any USB robot controller (like an Arduino, Micro:bit, or Pico) into your Device, click connect, and send direct serial steering commands.")
             
             st.write("##")
             
@@ -1805,7 +1805,7 @@ else:
         st.caption("Updated on July 12, 2026")
         st.markdown("""
         * **🔌 User Integrations Hub:** Added a public-facing widgets tool! Any visitor can now customize and copy an HTML iframe embed block to share Titan Creator's Studio on their Wix, WordPress, or custom websites.
-        * **🤖 Web Serial Hardware Driver:** Built client-side browser integration allowing any visitor to physically hook up microcontrollers (Arduino/Micro:bit) to their Chromebook's USB port and run robots right from the site!
+        * **🤖 Web Serial Hardware Driver:** Built client-side browser integration allowing any visitor to physically hook up microcontrollers (Arduino/Micro:bit) to their Device's USB port and run robots right from the site!
         * **The 'Sir' Purge:** Purged conversational title calls from default prompts and tamagotchi parameters.
         * **Trophy Room local Level HUD:** Added dynamic, gamified unlocks to encourage coding, sandbox previews, and theme modifications.
         """)
