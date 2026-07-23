@@ -15,7 +15,7 @@ like one), so this module stays reusable outside of a Streamlit context.
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from groq_client import Groq
+from groq import Groq
 
 from config import MODEL_HEAVY, MODEL_STANDARD, SYSTEM_PROMPT
 
